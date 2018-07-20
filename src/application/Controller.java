@@ -3,6 +3,7 @@ package application;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -14,6 +15,7 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import lives.Animal;
 import lives.Field;
 import lives.Life;
@@ -28,6 +30,16 @@ public class Controller {
 	Series<Integer, Integer> animalNumSeries = new Series<Integer, Integer>();
 	Series<Integer, Integer> allNumSeries = new Series<Integer, Integer>();
 	int t = 0;
+	List<Life> list = new ArrayList<Life>();
+
+	void ini() {
+		tl = new Timeline(new KeyFrame(Duration.millis(100), e -> action(list)));
+		tl.setCycleCount(1000);
+
+		for (int i = 0; i < 200; i++) list.add(new Plant());
+		for (int i = 0; i < 100; i++) list.add(new Animal());
+		Field.update(list);
+	}
 
 	void action(List<Life> list) {
 		if (t == 0) iniChart();
@@ -101,9 +113,6 @@ public class Controller {
 		tl.stop();
 	}
 
-	void setTimeLine(Timeline tl) {
-		this.tl = tl;
-	}
 	 void iniChart() {
 		 plantNumSeries.setName("plant");
 		 animalNumSeries.setName("animal");
