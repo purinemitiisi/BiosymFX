@@ -35,4 +35,14 @@ public abstract class Life {
 		return hp <= 0 ? true : false;
 	}
 
+
+
+	public boolean isNear(Life l, double d) {
+		return (l.x-x)*(l.x-x) + (l.y-y)*(l.y-y) < d*d;
+	}
+
+	public boolean isHitted(Life l) {
+		return (l.x-x)*(l.x-x) + (l.y-y)*(l.y-y) < (r+l.r)*(r+l.r)/4;
+	}
+
 }

@@ -28,19 +28,19 @@ public class Animal extends Life {
 			double X = x + 20*(Math.random()-0.5);
 			double Y = y + 20*(Math.random()-0.5);
 			int    R = r + 10*(int) (Math.random()-0.5);
-			for (Life life : Field.nearPlant(this)) {
-				if (Math.hypot(X-life.x, Y-life.y) < 5) {
-					move();
-					return;
-				}
-			}
+//			for (Life life : Field.nearPlant(this)) {
+//				if ((X-life.x)*(X-life.x) + (Y-life.y)*(Y-life.y) < 25) {
+//					move();
+//					return;
+//				}
+//			}
 			next.add(new Animal(X, Y, R));
 			hp /= 2;
 			return;
 		}
 
 		for (Life life : list) {
-			if (life.getClass() == Plant.class && Math.hypot(life.x - x, life.y - y) < r) {
+			if (life.getClass() == Plant.class && isHitted(life)) {
 				eat((Plant) life);
 				return;
 			}
@@ -58,7 +58,7 @@ public class Animal extends Life {
 		x = Field.outChkX(x+vx);
 		y = Field.outChkY(y+vy);
 		time--;
-		hp -= (int) Math.hypot(vx, vy) * r/20 + 1;
+		hp -= (int) speed * r/20 + 1;
 	}
 
 	void eat(Plant p) {

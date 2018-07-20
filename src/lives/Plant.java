@@ -18,7 +18,7 @@ public class Plant extends Life {
 		hp += r/5;
 		if (hp > mhp) {
 			hp = mhp;
-			if (NUM > 500 || Math.random() > 0.1) return;
+			if (NUM > 1000 || Math.random() > 0.5) return;
 
 			double X = x + 20*(Math.random()-0.5);
 			double Y = y + 20*(Math.random()-0.5);
@@ -26,7 +26,7 @@ public class Plant extends Life {
 			X = Field.outChkX(X);
 			Y = Field.outChkY(Y);
 			for (Life life : Field.nearPlant(this)) {
-				if (Math.hypot(X-life.x, Y-life.y) < 5)
+				if ((X-life.x)*(X-life.x) + (Y-life.y)*(Y-life.y) < life.r*life.r)
 					return;
 			}
 			next.add(new Plant(X, Y, R));

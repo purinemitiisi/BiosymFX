@@ -3,6 +3,7 @@ package application;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.concurrent.Service;
@@ -30,19 +31,20 @@ public class Controller {
 	Series<Integer, Integer> animalNumSeries = new Series<Integer, Integer>();
 	Series<Integer, Integer> allNumSeries = new Series<Integer, Integer>();
 	int t = 0;
-	List<Life> list = new ArrayList<Life>();
+	List<Life> lifeList = new ArrayList<Life>();
 
 	void ini() {
-		tl = new Timeline(new KeyFrame(Duration.millis(100), e -> action(list)));
-		tl.setCycleCount(1000);
+		tl = new Timeline(new KeyFrame(Duration.millis(100), e -> action()));
+		tl.setCycleCount(Animation.INDEFINITE);
 
-		for (int i = 0; i < 200; i++) list.add(new Plant());
-		for (int i = 0; i < 100; i++) list.add(new Animal());
-		Field.update(list);
+		for (int i = 0; i < 200; i++) lifeList.add(new Plant());
+		for (int i = 0; i < 100; i++) lifeList.add(new Animal());
+		Field.update(lifeList);
 	}
 
-	void action(List<Life> list) {
+	void action() {
 		if (t == 0) iniChart();
+		double startTime = System.currentTimeMillis();
 
 		gc = canvas.getGraphicsContext2D();
 		gc.clearRect(0, 0, 600, 600);
@@ -55,8 +57,8 @@ public class Controller {
 					@Override
 					protected Void call() throws Exception {
 						List<Life> next = new ArrayList<Life>();
-						for (Life life : list) {
-							life.act(list, next);
+						for (Life life : lifeList) {
+							life.act(lifeList, next);
 							if (life.isDead()) {
 								if (life.getClass() == Animal.class && Math.random() < 0.1) {
 									double X = life.x;
@@ -69,9 +71,9 @@ public class Controller {
 							}
 							next.add(life);
 						}
-						list.clear();
-						list.addAll(next);
-						Field.update(list);
+						lifeList.clear();
+						lifeList.addAll(next);
+						Field.update(lifeList);
 
 						return null;
 					}
@@ -83,7 +85,7 @@ public class Controller {
 		servis.start();
 		int a = 0;
 		int p = 0;
-		for (Life life : list) {
+		for (Life life : lifeList) {
 			if (life.getClass() == Plant.class) {gc.setFill(Color.GREEN); p++;}
 			if (life.getClass() == Animal.class) {gc.setFill(Color.BLUE) ;a++;}
 			gc.fillOval(life.x-5, life.y-5, life.r, life.r);
@@ -101,6 +103,8 @@ public class Controller {
 			}
 		}
 		t++;
+		double endTime = System.currentTimeMillis();
+		System.out.println(endTime - startTime);
 	}
 
 	@FXML
