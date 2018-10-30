@@ -17,8 +17,6 @@ public class Main extends Application {
 			Scene scene = new Scene(root);
 			primaryStage.setScene(scene);
 			primaryStage.show();
-			
-			ctrl.ini();
 
 		} catch(Exception e) {
 			e.printStackTrace();

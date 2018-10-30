@@ -1,7 +1,9 @@
 package application;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -9,12 +11,10 @@ import javafx.animation.Timeline;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.scene.CacheHint;
+import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.chart.XYChart.Series;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import lives.Animal;
@@ -22,18 +22,19 @@ import lives.Field;
 import lives.Life;
 import lives.Plant;
 
-public class Controller {
-	@FXML Canvas canvas;
-	@FXML LineChart<Integer, Integer> chart;
+public class Controller implements Initializable{
+	@FXML
+	Canvas canvas;
+	@FXML
+	ChartController chartController;
+
 	GraphicsContext gc;
 	Timeline tl;
-	Series<Integer, Integer> plantNumSeries = new Series<Integer, Integer>();
-	Series<Integer, Integer> animalNumSeries = new Series<Integer, Integer>();
-	Series<Integer, Integer> allNumSeries = new Series<Integer, Integer>();
 	int t = 0;
 	List<Life> lifeList = new ArrayList<Life>();
 
-	void ini() {
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
 		tl = new Timeline(new KeyFrame(Duration.millis(100), e -> action()));
 		tl.setCycleCount(Animation.INDEFINITE);
 
@@ -43,7 +44,6 @@ public class Controller {
 	}
 
 	void action() {
-		if (t == 0) iniChart();
 		double startTime = System.currentTimeMillis();
 
 		gc = canvas.getGraphicsContext2D();
@@ -93,13 +93,13 @@ public class Controller {
 		Plant.NUM = p;
 		Animal.NUM = a;
 		if (t%10 == 0) {
-			plantNumSeries.getData().add(new XYChart.Data<Integer, Integer>(t, p));
-			animalNumSeries.getData().add(new XYChart.Data<Integer, Integer>(t, a));
-			allNumSeries.getData().add(new XYChart.Data<Integer, Integer>(t, a+p));
+			chartController.plantNumSeries.getData().add(new XYChart.Data<Integer, Integer>(t, p));
+			chartController.animalNumSeries.getData().add(new XYChart.Data<Integer, Integer>(t, a));
+			chartController.allNumSeries.getData().add(new XYChart.Data<Integer, Integer>(t, a+p));
 			if (t > 1000) {
-				plantNumSeries.getData().remove(0);
-				animalNumSeries.getData().remove(0);
-				allNumSeries.getData().remove(0);
+				chartController.plantNumSeries.getData().remove(0);
+				chartController.animalNumSeries.getData().remove(0);
+				chartController.allNumSeries.getData().remove(0);
 			}
 		}
 		t++;
@@ -117,16 +117,4 @@ public class Controller {
 		tl.stop();
 	}
 
-	 void iniChart() {
-		 plantNumSeries.setName("plant");
-		 animalNumSeries.setName("animal");
-		 allNumSeries.setName("all");
-
-		 chart.getData().add(plantNumSeries);
-		 chart.getData().add(animalNumSeries);
-		 chart.getData().add(allNumSeries);
-		 chart.setCreateSymbols(false);
-		 chart.setCache(true);
-		 chart.setCacheHint(CacheHint.SPEED);
-	 }
 }

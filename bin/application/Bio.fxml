@@ -11,17 +11,21 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
    <children>
-      <Canvas fx:id="canvas" cache="true" cacheHint="SPEED" height="600.0" width="600.0" />
-      <Line endX="100.0" layoutX="601.0" layoutY="299.0" rotate="90.0" scaleX="3.0" startX="-100.0" />
-      <Button fx:id="startButton" layoutX="671.0" layoutY="190.0" mnemonicParsing="false" onAction="#onStartButton" text="start" />
-      <Button fx:id="stopButton" layoutX="784.0" layoutY="190.0" mnemonicParsing="false" onAction="#onStopButton" text="stop" />
-      <LineChart fx:id="chart" cache="true" cacheHint="SPEED" createSymbols="false" layoutX="601.0" layoutY="300.0" prefHeight="300.0" prefWidth="300.0" snapToPixel="false">
-        <xAxis>
-          <NumberAxis animated="false" forceZeroInRange="false" side="BOTTOM" tickUnit="100.0" upperBound="1000.0" />
-        </xAxis>
-        <yAxis>
-          <NumberAxis animated="false" autoRanging="false" side="LEFT" tickUnit="100.0" upperBound="1000.0" />
-        </yAxis>
-      </LineChart>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Canvas fx:id="canvas" cache="true" cacheHint="SPEED" height="600.0" width="600.0" />
+            <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #cccccc;">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0">
+                     <children>
+                        <Button fx:id="startButton" mnemonicParsing="false" onAction="#onStartButton" text="start" />
+                        <Button fx:id="stopButton" mnemonicParsing="false" onAction="#onStopButton" text="stop" />
+                     </children>
+                  </HBox>
+                  <fx:include fx:id="chart" source="Chart.fxml" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
    </children>
 </Pane>
